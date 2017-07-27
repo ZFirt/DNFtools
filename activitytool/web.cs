@@ -21,7 +21,7 @@ namespace activitytool
         /// <param name="postDataStr">Post数据</param>
         /// <param name="cookie">Cookie容器</param>
         /// <returns></returns>
-        public static string SendDataByPost(string Url, string postDataStr, ref CookieContainer cookie, string Host = "", string Referer = "")
+        public static string SendDataByPost(string Url, string postDataStr, ref CookieContainer cookie, string Host = "", string Referer = "", string User_Agent = "")
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
             if (cookie.Count == 0)
@@ -37,6 +37,8 @@ namespace activitytool
                 request.Host = Host;
             if (Referer != "")
                 request.Referer = Referer;
+            if (User_Agent != "")
+                request.UserAgent = User_Agent;
 
             request.KeepAlive = true;
             request.Method = "POST";
@@ -66,7 +68,7 @@ namespace activitytool
         /// <param name="postDataStr">GET数据</param>
         /// <param name="cookie">GET容器</param>
         /// <returns></returns>
-        public static string SendDataByGET(string Url, string postDataStr, ref CookieContainer cookie, string Host = "", string Referer = "")
+        public static string SendDataByGET(string Url, string postDataStr, ref CookieContainer cookie, string Host = "", string Referer = "",string User_Agent="")
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url + (postDataStr == "" ? "" : "?") + postDataStr);
             if (cookie.Count == 0)
@@ -87,6 +89,8 @@ namespace activitytool
                 request.Host = Host;
             if (Referer != "")
                 request.Referer = Referer;
+            if (User_Agent != "")
+                request.UserAgent = User_Agent;
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream myResponseStream = response.GetResponseStream();

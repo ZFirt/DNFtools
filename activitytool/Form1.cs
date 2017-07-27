@@ -324,12 +324,20 @@ namespace activitytool
                 gifurl = gifurl.Replace("{checkparam}", checkparam).Replace("{md5str}", md5str).Replace("{ametk}", ametk).Replace("{sSDID}", sSDIDList[ext1]);
                 postdata = postdata.Replace("{checkparam}", checkparam).Replace("{md5str}", md5str).Replace("{ametk}", ametk).Replace("{sSDID}", sSDIDList[ext1]);
             }
+            string au = "";
+            if (act.GetNode("model").toString() == "3")
+            {
+                au=act.GetNode("Ext3").toString();
+                gifurl = gifurl.Replace("{ametk}", ametk);
+                postdata = postdata.Replace("{ametk}", ametk);
+ 
+            }
 
             string aa = "";
             if (act.GetNode("subMethod").toString() == "Post")
-                aa = web.SendDataByPost(gifurl, postdata, ref myCookieContainer, act.GetNode("Host").toString(), act.GetNode("Referer").toString());
+                aa = web.SendDataByPost(gifurl, postdata, ref myCookieContainer, act.GetNode("Host").toString(), act.GetNode("Referer").toString(), au);
             else
-                aa = web.SendDataByGET(gifurl, postdata, ref myCookieContainer, act.GetNode("Host").toString(), act.GetNode("Referer").toString());
+                aa = web.SendDataByGET(gifurl, postdata, ref myCookieContainer, act.GetNode("Host").toString(), act.GetNode("Referer").toString(), au);
             //var a = JsonConvert.DeserializeObject<smsg>(aa);
 
             //MessageBox.Show(gifurl);
@@ -374,8 +382,8 @@ namespace activitytool
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            loadonlineini();
-            //loadnewini();
+            //loadonlineini();
+            loadnewini();
             loadServer();
             //loadini();
             groupBox1.Visible = false;
@@ -693,7 +701,7 @@ namespace activitytool
 
             _MJson m = new _MJson(r);
 
-            if (actnodeList[index].GetNode("model").toString() == "2")
+            if (actnodeList[index].GetNode("model").toString() == "2" || actnodeList[index].GetNode("model").toString()=="3")
             {
                 if (m.GetNode("modRet") == null) textBox1.AppendText("\r\n" + DateTime.Now.ToString() + "领取失败:" + m.GetNode("sMsg").toString() + "\r\n");
                 else textBox1.AppendText("\r\n" + DateTime.Now.ToString() + ":" + m.GetNode("modRet").GetNode("sMsg").toString() + "\r\n");
