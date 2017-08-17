@@ -36,6 +36,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.AD_webBrowser = new System.Windows.Forms.WebBrowser();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -58,7 +59,6 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.AD_webBrowser = new System.Windows.Forms.WebBrowser();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -146,6 +146,18 @@
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "活动列表";
+            // 
+            // AD_webBrowser
+            // 
+            this.AD_webBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AD_webBrowser.Location = new System.Drawing.Point(27, 350);
+            this.AD_webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.AD_webBrowser.Name = "AD_webBrowser";
+            this.AD_webBrowser.ScrollBarsEnabled = false;
+            this.AD_webBrowser.Size = new System.Drawing.Size(450, 100);
+            this.AD_webBrowser.TabIndex = 2;
+            this.AD_webBrowser.NewWindow += new System.ComponentModel.CancelEventHandler(this.AD_webBrowser_NewWindow);
             // 
             // textBox1
             // 
@@ -373,16 +385,6 @@
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
             this.toolStripStatusLabel3.Size = new System.Drawing.Size(324, 17);
             this.toolStripStatusLabel3.Text = "-------------有问题联系作者！！！邮箱:coolmre@qq.com";
-            // 
-            // AD_webBrowser
-            // 
-            this.AD_webBrowser.Location = new System.Drawing.Point(27, 350);
-            this.AD_webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.AD_webBrowser.Name = "AD_webBrowser";
-            this.AD_webBrowser.ScrollBarsEnabled = false;
-            this.AD_webBrowser.Size = new System.Drawing.Size(450, 100);
-            this.AD_webBrowser.TabIndex = 2;
-            this.AD_webBrowser.NewWindow += new System.ComponentModel.CancelEventHandler(this.AD_webBrowser_NewWindow);
             // 
             // Form1
             // 
