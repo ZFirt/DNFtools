@@ -43,6 +43,7 @@ namespace actini
             model_textBox.Text = selected.model.ToString();
             subURL_textBox.Text = selected.subURL;
             subMethod_textBox.Text = selected.subMethod;
+            autoSub_textBox.Text = selected.autoSub;
             subDate_textBox.Text = selected.subDate;
             Ext1_textBox.Text = selected.Ext1;
             Ext2_textBox.Text = selected.Ext2;
@@ -72,6 +73,7 @@ namespace actini
                 tmpactinfo.actURL = actURL_textBox.Text;
                 tmpactinfo.subURL = subURL_textBox.Text;
                 tmpactinfo.subMethod = subMethod_textBox.Text;
+                tmpactinfo.autoSub = autoSub_textBox.Text;
                 tmpactinfo.subDate = subDate_textBox.Text;
                 tmpactinfo.Ext1 = Ext1_textBox.Text;
                 tmpactinfo.Ext2 = Ext2_textBox.Text;
@@ -97,6 +99,7 @@ namespace actini
                 tmp.actURL = actURL_textBox.Text;
                 tmp.subURL = subURL_textBox.Text;
                 tmp.subMethod = subMethod_textBox.Text;
+                tmp.autoSub = autoSub_textBox.Text;
                 tmp.subDate = subDate_textBox.Text;
                 tmp.Ext1 = Ext1_textBox.Text;
                 tmp.Ext2 = Ext2_textBox.Text;

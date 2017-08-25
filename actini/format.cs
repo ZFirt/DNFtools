@@ -24,6 +24,7 @@ namespace actini
         public string actURL { get; set; }
         public string subURL { get; set; }
         public string subMethod { get; set; }
+        public string autoSub { get; set; }
         public string subDate { get; set; }
         public string Host { get; set; }
         public string Referer { get; set; }

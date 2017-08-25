@@ -117,4 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>内置参数
+加密参数1:22814e1600cf64ed9e6142642bc0ebf1
+{gtk}
+======================================
+加密参数2:1610215129
+{ametk}
+======================================
+加密参数3:AF689EC719AD02C0E3BADDA2F1A8532A
+{md5str}
+======================================
+角色验证参数
+{checkparam}
+======================================
+角色验证参数1级URLcode
+{u1checkparam}
+======================================
+角色验证参数2级URLcode
+{u2checkparam}
+======================================
+账号
+{pt2gguin}
+======================================
+区
+{area}
+======================================
+角色ID
+{roleid}
+======================================
+角色名
+{rolename}
+======================================
+角色名1级URLcode
+{u1rolename}
+======================================
+角色名2级URLcode
+{u2rolename}
+======================================</value>
+  </data>
 </root>

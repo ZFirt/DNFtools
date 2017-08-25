@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.actname_textBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -64,6 +65,9 @@
             this.Ext1_textBox = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.flowid_textBox = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.autoSub_textBox = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // actname_textBox
@@ -243,7 +247,7 @@
             // 
             this.subMethod_textBox.Location = new System.Drawing.Point(87, 310);
             this.subMethod_textBox.Name = "subMethod_textBox";
-            this.subMethod_textBox.Size = new System.Drawing.Size(360, 21);
+            this.subMethod_textBox.Size = new System.Drawing.Size(147, 21);
             this.subMethod_textBox.TabIndex = 20;
             // 
             // label11
@@ -365,11 +369,40 @@
             this.flowid_textBox.Size = new System.Drawing.Size(147, 21);
             this.flowid_textBox.TabIndex = 34;
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(247, 313);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(53, 12);
+            this.label17.TabIndex = 37;
+            this.label17.Text = "自动提交";
+            // 
+            // autoSub_textBox
+            // 
+            this.autoSub_textBox.Location = new System.Drawing.Point(306, 310);
+            this.autoSub_textBox.Name = "autoSub_textBox";
+            this.autoSub_textBox.Size = new System.Drawing.Size(141, 21);
+            this.autoSub_textBox.TabIndex = 36;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(463, 40);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(300, 486);
+            this.textBox1.TabIndex = 38;
+            this.textBox1.Text = resources.GetString("textBox1.Text");
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(471, 615);
+            this.ClientSize = new System.Drawing.Size(784, 615);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.autoSub_textBox);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.flowid_textBox);
             this.Controls.Add(this.label13);
@@ -452,5 +485,8 @@
         private System.Windows.Forms.TextBox Ext1_textBox;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox flowid_textBox;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox autoSub_textBox;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
