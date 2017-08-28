@@ -49,11 +49,11 @@
             this.button_onekeysubmit = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button3 = new System.Windows.Forms.Button();
+            this.button_reCode = new System.Windows.Forms.Button();
+            this.textBox_Code = new System.Windows.Forms.TextBox();
+            this.textBox_CDK = new System.Windows.Forms.TextBox();
+            this.pictureBox_Code = new System.Windows.Forms.PictureBox();
+            this.button_submitCDK = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -61,7 +61,7 @@
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Code)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -265,11 +265,11 @@
             // 
             this.groupBox2.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.groupBox2.Controls.Add(this.checkBox1);
-            this.groupBox2.Controls.Add(this.button4);
-            this.groupBox2.Controls.Add(this.textBox3);
-            this.groupBox2.Controls.Add(this.textBox2);
-            this.groupBox2.Controls.Add(this.pictureBox1);
-            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.button_reCode);
+            this.groupBox2.Controls.Add(this.textBox_Code);
+            this.groupBox2.Controls.Add(this.textBox_CDK);
+            this.groupBox2.Controls.Add(this.pictureBox_Code);
+            this.groupBox2.Controls.Add(this.button_submitCDK);
             this.groupBox2.Location = new System.Drawing.Point(0, 109);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(161, 142);
@@ -288,49 +288,51 @@
             this.checkBox1.Text = "自动识别";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // button_reCode
             // 
-            this.button4.Location = new System.Drawing.Point(102, 43);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(46, 33);
-            this.button4.TabIndex = 13;
-            this.button4.Text = "刷新";
-            this.button4.UseVisualStyleBackColor = false;
+            this.button_reCode.Location = new System.Drawing.Point(102, 43);
+            this.button_reCode.Name = "button_reCode";
+            this.button_reCode.Size = new System.Drawing.Size(46, 33);
+            this.button_reCode.TabIndex = 13;
+            this.button_reCode.Text = "刷新";
+            this.button_reCode.UseVisualStyleBackColor = false;
+            this.button_reCode.Click += new System.EventHandler(this.button_Click);
             // 
-            // textBox3
+            // textBox_Code
             // 
-            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBox3.Location = new System.Drawing.Point(17, 79);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(80, 21);
-            this.textBox3.TabIndex = 12;
+            this.textBox_Code.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox_Code.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textBox_Code.Location = new System.Drawing.Point(17, 79);
+            this.textBox_Code.Name = "textBox_Code";
+            this.textBox_Code.Size = new System.Drawing.Size(80, 21);
+            this.textBox_Code.TabIndex = 12;
             // 
-            // textBox2
+            // textBox_CDK
             // 
-            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox2.Location = new System.Drawing.Point(15, 21);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(134, 21);
-            this.textBox2.TabIndex = 11;
+            this.textBox_CDK.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox_CDK.Location = new System.Drawing.Point(15, 21);
+            this.textBox_CDK.Name = "textBox_CDK";
+            this.textBox_CDK.Size = new System.Drawing.Size(134, 21);
+            this.textBox_CDK.TabIndex = 11;
             // 
-            // pictureBox1
+            // pictureBox_Code
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(17, 42);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(80, 35);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 10;
-            this.pictureBox1.TabStop = false;
+            this.pictureBox_Code.Location = new System.Drawing.Point(17, 42);
+            this.pictureBox_Code.Name = "pictureBox_Code";
+            this.pictureBox_Code.Size = new System.Drawing.Size(80, 35);
+            this.pictureBox_Code.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox_Code.TabIndex = 10;
+            this.pictureBox_Code.TabStop = false;
             // 
-            // button3
+            // button_submitCDK
             // 
-            this.button3.Location = new System.Drawing.Point(40, 106);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "领取奖励";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button_submitCDK.Location = new System.Drawing.Point(40, 106);
+            this.button_submitCDK.Name = "button_submitCDK";
+            this.button_submitCDK.Size = new System.Drawing.Size(75, 23);
+            this.button_submitCDK.TabIndex = 9;
+            this.button_submitCDK.Text = "领取奖励";
+            this.button_submitCDK.UseVisualStyleBackColor = true;
+            this.button_submitCDK.Click += new System.EventHandler(this.button_Click);
             // 
             // statusStrip1
             // 
@@ -381,7 +383,7 @@
             this.panel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Code)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -401,13 +403,13 @@
         private System.Windows.Forms.ColumnHeader name;
         private System.Windows.Forms.ColumnHeader gift;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button_submitCDK;
+        private System.Windows.Forms.PictureBox pictureBox_Code;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox_Code;
+        private System.Windows.Forms.TextBox textBox_CDK;
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button_reCode;
         private System.Windows.Forms.Button button_onekeysubmit;
         private System.Windows.Forms.Button button_submitselect;
         private System.Windows.Forms.Button button_gourl;

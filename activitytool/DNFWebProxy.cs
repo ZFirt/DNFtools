@@ -53,7 +53,7 @@ namespace activitytool
             }
             return tmplist;
         }
-        public List<string> loadRole(string area)
+        public List<string> loadRole(string area, string areaname)
         {
             string query_role_result = SendDataByGET("http://comm.aci.game.qq.com/main?game=dnf&area=" + area + "&sCloudApiName=ams.gameattr.role&iAmsActivityId=http%3A%2F%2Fdnf.qq.com%2Fgift.shtml&sServiceDepartment=group_3"
                 , "", ref myCookieContainer, "comm.aci.game.qq.com", "http://dnf.qq.com/gift.shtml");
@@ -65,6 +65,9 @@ namespace activitytool
             Value_Dictionary["{u1checkparam}"] = System.Web.HttpUtility.UrlEncode(Value_Dictionary["{checkparam}"]);
             Value_Dictionary["{u2checkparam}"] = System.Web.HttpUtility.UrlEncode(Value_Dictionary["{u1checkparam}"]);
             Value_Dictionary["{area}"] = area;
+            Value_Dictionary["{areaname}"] = areaname;
+            Value_Dictionary["{u1areaname}"] = System.Web.HttpUtility.UrlEncode(Value_Dictionary["{areaname}"]).ToUpper();
+            Value_Dictionary["{u2areaname}"] = System.Web.HttpUtility.UrlEncode(Value_Dictionary["{u1areaname}"]).ToUpper();
             Value_Dictionary["{roleid}"] = "";
             return roleInfo.Select(t => System.Web.HttpUtility.UrlDecode(t.Split(' ')[1])).ToList();
 
@@ -77,7 +80,7 @@ namespace activitytool
                 Value_Dictionary["{roleid}"] = tmprole[0];
                 Value_Dictionary["{rolename}"] = System.Web.HttpUtility.UrlDecode(tmprole[1]);
                 Value_Dictionary["{u1rolename}"] = tmprole[1];
-                Value_Dictionary["{u2rolename}"] = System.Web.HttpUtility.UrlEncode(Value_Dictionary["{u1rolename}"]);
+                Value_Dictionary["{u2rolename}"] = System.Web.HttpUtility.UrlEncode(Value_Dictionary["{u1rolename}"]).ToUpper();
 
                 return true;
             }
@@ -85,6 +88,11 @@ namespace activitytool
             {
                 return false;
             }
+
+        }
+        public bool ValueVerify()
+        {
+            return Value_Dictionary.Keys.Contains("{roleid}") && Value_Dictionary["{roleid}"] != "";
 
         }
         public void SubmitAct(List<int> indexlist, Action<string> AddText)
@@ -105,7 +113,7 @@ namespace activitytool
                 t =>
                 {
                     result = GetGift(t);
-                    AddText(Analysis(t,result));
+                    AddText(Analysis(t, result));
                 });
 
         }
@@ -116,23 +124,70 @@ namespace activitytool
             _MJson m = new _MJson(rl);
             try
             {
+
+                switch (obj.GetNode("model").toString())
+                {
+                    case "1":
+                        {
+                            if (m.GetNode("msg").toString() == "success")
+                            {
+                                if (m.GetNode("op").toString() == "online_cdk")
+                                    result.Append("\r\n======CDK=======\r\n" + m.GetNode("cdkey").toString() + "\r\n================");
+                                result.Append("\r\n" + DateTime.Now.ToString() + ",领取【" + m.GetNode("actname").toString() + "】成功");
+                            }
+                            else
+                            {
+                                result.Append("\r\n" + DateTime.Now.ToString() + ",领取【" + m.GetNode("actname").toString() + "】失败，原因：" + m.GetNode("msg").toString());
+                            }
+                        }
+                        break;
+                    case "2":
+                        {
+                            if (m.GetNode("modRet") == null)
+                            { 
+                                result.Append("\r\n" + DateTime.Now.ToString() + "领取失败:" + m.GetNode("sMsg").toString());
+                            }
+                            else 
+                            {
+                                result.Append("\r\n" + DateTime.Now.ToString() + ":" + m.GetNode("modRet").GetNode("sMsg").toString());
+                            }
+                        }
+                        break;
+                    case "3":
+                        {
+                            if (m.GetNode("modRet") == null)
+                            { 
+                                result.Append("\r\n" + DateTime.Now.ToString() + "领取失败:" + m.GetNode("sMsg").toString());
+                            }
+                            else 
+                            {
+                                result.Append("\r\n" + DateTime.Now.ToString() + ":" + m.GetNode("modRet").GetNode("sMsg").toString());
+                            }
+                        }
+                        break;
+                    case "4":
+                        {
+                            if (m.GetNode("code").toString() != "0")
+                            {
+                                result.Append("\r\n" + DateTime.Now.ToString() + "领取失败:" + m.GetNode("msg").toString());
+                            }
+                            else
+                            {
+                                result.Append("\r\n" + DateTime.Now.ToString() + ": 成功,领取到" + m.GetNode("gift_name").toString());
+                            }
+                        }
+                        break;
+                }
+
+
                 if (obj.GetNode("model").toString() == "2")
                 {
-                    if (m.GetNode("modRet") == null) result.Append("\r\n" + DateTime.Now.ToString() + "领取失败:" + m.GetNode("sMsg").toString());
-                    else result.Append("\r\n" + DateTime.Now.ToString() + ":" + m.GetNode("modRet").GetNode("sMsg").toString());
+                    
 
                 }
                 else
                 {
-                    if (m.GetNode("msg").toString() == "success")
-                    {
-                        if (m.GetNode("op").toString() == "online_cdk")
-                            result.Append("\r\n======CDK=======\r\n" + m.GetNode("cdkey").toString() + "\r\n================");
-                        result.Append("\r\n" + DateTime.Now.ToString() + ",领取【" + m.GetNode("actname").toString() + "】成功");
 
-                    }
-                    else
-                        result.Append("\r\n" + DateTime.Now.ToString() + ",领取【" + m.GetNode("actname").toString() + "】失败，原因：" + m.GetNode("msg").toString());
                 }
             }
             catch
@@ -149,6 +204,7 @@ namespace activitytool
                 .Replace("{area}", Value_Dictionary["{area}"])
                 .Replace("{roleid}", Value_Dictionary["{roleid}"])
                 .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                .Replace("{skey}", Value_Dictionary["{skey}"])
                 .Replace("{actid}", act.GetNode("actid").toString())
                 .Replace("{flowid}", act.GetNode("flowid").toString());
             string postdata = act.GetNode("subDate").toString()
@@ -156,37 +212,94 @@ namespace activitytool
                 .Replace("{area}", Value_Dictionary["{area}"])
                 .Replace("{roleid}", Value_Dictionary["{roleid}"])
                 .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                .Replace("{skey}", Value_Dictionary["{skey}"])
                 .Replace("{actid}", act.GetNode("actid").toString())
                 .Replace("{flowid}", act.GetNode("flowid").toString());
-
-            if (act.GetNode("model").toString() == "2")
-            {
-                string ext1 = act.GetNode("Ext1").toString();
-                if (!sSDIDList.ContainsKey(ext1))
-                {
-                    string ams_actdesc = web.SendDataByGET(ext1, "", ref myCookieContainer, act.GetNode("Ext2").toString(), act.GetNode("Ext1").toString());
-                    _MJson m = new _MJson(ams_actdesc);
-                    sSDIDList[ext1] = m.GetNode("sSDID").toString();
-
-                }
-                gifurl = gifurl.Replace("{checkparam}", Value_Dictionary["{u2checkparam}"]).Replace("{md5str}", Value_Dictionary["{md5str}"]).Replace("{ametk}", Value_Dictionary["{ametk}"]).Replace("{sSDID}", sSDIDList[ext1]);
-                postdata = postdata.Replace("{checkparam}", Value_Dictionary["{u2checkparam}"]).Replace("{md5str}", Value_Dictionary["{md5str}"]).Replace("{ametk}", Value_Dictionary["{ametk}"]).Replace("{sSDID}", sSDIDList[ext1]);
-            }
             string au = "";
-            if (act.GetNode("model").toString() == "3")
+            string Host = act.GetNode("Host").toString();
+            string Referer = act.GetNode("Referer").toString();
+            string addcookies = "";
+            switch (act.GetNode("model").toString())
             {
-                au = act.GetNode("Ext3").toString();
-                gifurl = gifurl.Replace("{ametk}", Value_Dictionary["{ametk}"]);
-                postdata = postdata.Replace("{ametk}", Value_Dictionary["{ametk}"]);
+                case "1": { } break;
+                case "2":
+                    {
+                        string ext1 = act.GetNode("Ext1").toString();
+                        if (!sSDIDList.ContainsKey(ext1))
+                        {
+                            string ams_actdesc = SendDataByGET(ext1, "", ref myCookieContainer, act.GetNode("Ext2").toString(), act.GetNode("Ext1").toString());
+                            _MJson m = new _MJson(ams_actdesc);
+                            sSDIDList[ext1] = m.GetNode("sSDID").toString();
 
+                        }
+                        gifurl = gifurl.Replace("{checkparam}", Value_Dictionary["{u2checkparam}"]).Replace("{md5str}", Value_Dictionary["{md5str}"]).Replace("{ametk}", Value_Dictionary["{ametk}"]).Replace("{sSDID}", sSDIDList[ext1]);
+                        postdata = postdata.Replace("{checkparam}", Value_Dictionary["{u2checkparam}"]).Replace("{md5str}", Value_Dictionary["{md5str}"]).Replace("{ametk}", Value_Dictionary["{ametk}"]).Replace("{sSDID}", sSDIDList[ext1]);
+
+                    } break;
+                case "3":
+                    {
+                        au = act.GetNode("Ext3").toString();
+                    } break;
+                case "4":
+                    {
+
+                        //addcookies =  System.Web.HttpUtility.UrlDecode(act.GetNode("Ext3").toString())
+                        //            .Replace("{g_tk}", Value_Dictionary["{gtk}"])
+                        //            .Replace("{area}", Value_Dictionary["{area}"])
+                        //            .Replace("{roleid}", Value_Dictionary["{roleid}"])
+                        //            .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                        //            .Replace("{checkparam}", Value_Dictionary["{checkparam}"])
+                        //            .Replace("{u1rolename}", Value_Dictionary["{u1rolename}"])
+                        //            .Replace("{u1areaname}", Value_Dictionary["{u1areaname}"])
+                        //            .Replace("{skey}", Value_Dictionary["{skey}"])
+                        //            .Replace("{actid}", act.GetNode("actid").toString())
+                        //            .Replace("{flowid}", act.GetNode("flowid").toString());
+                        gifurl = gifurl.Replace("{u1rolename}", Value_Dictionary["{u1rolename}"])
+                                    .Replace("{QQ}", QQ)
+                                    .Replace("{u1areaname}", Value_Dictionary["{u1areaname}"]);
+                        ;
+                    } break;
             }
 
             string result = "";
             if (act.GetNode("subMethod").toString().ToLower() == "post")
-                result = web.SendDataByPost(gifurl, postdata, ref myCookieContainer, act.GetNode("Host").toString(), act.GetNode("Referer").toString(), au);
+                result = SendDataByPost(gifurl, postdata, ref myCookieContainer, Host, Referer, au, addcookies);
             else
-                result = web.SendDataByGET(gifurl, postdata, ref myCookieContainer, act.GetNode("Host").toString(), act.GetNode("Referer").toString(), au);
+                result = SendDataByGET(gifurl, postdata, ref myCookieContainer, Host, Referer, au, addcookies);
             return result;
+        }
+
+        public string CDKexchange(string CDK, string Code)
+        {
+            try
+            {
+                string result = SendDataByPost(Properties.Resources.DNFCDKURL,
+                    Properties.Resources.DNFCDKPost
+                    .Replace("{CDK}", CDK)
+                    .Replace("{Code}", Code)
+                    .Replace("{QQ}", QQ)
+                    .Replace("{g_tk}", Value_Dictionary["{gtk}"])
+                    .Replace("{area}", Value_Dictionary["{area}"])
+                    .Replace("{roleid}", Value_Dictionary["{roleid}"])
+                    .Replace("{md5str}", Value_Dictionary["{md5str}"])
+                    .Replace("{u2rolename}", Value_Dictionary["{u2rolename}"])
+                    .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                    .Replace("{u2checkparam}", Value_Dictionary["{u2checkparam}"])
+                    , ref myCookieContainer);
+                _MJson m = new _MJson(result);
+                node w = m.GetNode("modRet");
+                w.Trim();
+                return w.GetNode("sMsg").toString();
+            }
+            catch
+            {
+                return "未知错误！！！";
+
+            }
+        }
+        public System.Drawing.Bitmap GetCodeBitmap()
+        {
+            return DowloadCheckImg("http://captcha.qq.com/getimage?aid=21000104", myCookieContainer);
         }
 
     }

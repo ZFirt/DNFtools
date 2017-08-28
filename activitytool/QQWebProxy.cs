@@ -19,6 +19,8 @@ namespace activitytool
         private string QQ_value="";
         public QQWebProxy(CookieContainer cookie)
         {
+            Uri u = new Uri("qq.com",true);
+            Value_Dictionary["{cookie}"] =cookie.GetCookieHeader(u);
             myCookieContainer=cookie;
             Value_Dictionary["{pt2gguin}"] = GetCookie("pt2gguin", myCookieContainer);
             QQ_value = int.Parse(Value_Dictionary["{pt2gguin}"].Substring(1, Value_Dictionary["{pt2gguin}"].Length - 1)).ToString();
@@ -30,6 +32,7 @@ namespace activitytool
         }
         public QQWebProxy(string cookie)
         {
+            Value_Dictionary["{cookie}"] = cookie;
             //String 的Cookie　要转成　Cookie型的　并放入CookieContainer中  
             string[] cookstr = cookie.Split(';');
             myCookieContainer = new CookieContainer();
@@ -126,6 +129,26 @@ namespace activitytool
             string rul = (hash & 2147483647).ToString();
             return rul;
         }
+
+        public void pt_logout_getCookie(string name)
+        {
+            Match m=new Regex("(^|;\\s*)" + name + "=([^;]*)(;|$)").Match(Value_Dictionary["{cookie}"]);
+             //= Regex.Match(, );
+            if(m.Success)
+            {
+                
+                string result = "";
+                string o = name;
+                for (; o != System.Web.HttpUtility.UrlDecode(o); )
+                    o = System.Web.HttpUtility.UrlDecode(o);
+                string[] t = { "<", ">", "'", "\"", "%3c", "%3e", "%27", "%22", "%253c", "%253e", "%2527", "%2522" };
+                string[] n = { "&#x3c;", "&#x3e;", "&#x27;", "&#x22;", "%26%23x3c%3B", "%26%23x3e%3B", "%26%23x27%3B", "%26%23x22%3B", "%2526%2523x3c%253B", "%2526%2523x3e%253B", "%2526%2523x27%253B", "%2526%2523x22%253B" };
+                for (int e = 0; e < t.Count(); e++)
+                    o = o.Replace(new Regex(t[e],RegexOptions.IgnoreCase).ToString(),n[e]);
+            }
+
+        }
+
         public static string SendDataByPost(string Url, string postDataStr)
         {
             CookieContainer tcookie = new CookieContainer();
@@ -139,7 +162,7 @@ namespace activitytool
         /// <param name="postDataStr">Post数据</param>
         /// <param name="cookie">Cookie容器</param>
         /// <returns></returns>
-        public static string SendDataByPost(string Url, string postDataStr, ref CookieContainer cookie, string Host = "", string Referer = "", string User_Agent = "")
+        public static string SendDataByPost(string Url, string postDataStr, ref CookieContainer cookie, string Host = "", string Referer = "", string User_Agent = "", string addcookies = "")
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
             if (cookie.Count == 0)
@@ -157,6 +180,17 @@ namespace activitytool
                 request.Referer = Referer;
             if (User_Agent != "")
                 request.UserAgent = User_Agent;
+            if (addcookies != "")
+            {
+                string[] cookstr = addcookies.Split(';');
+                foreach (string str in cookstr)
+                {
+                    string[] cookieNameValue = str.Split('=');
+                    Cookie ck = new Cookie(cookieNameValue[0].Trim().ToString(), cookieNameValue[1].Trim().ToString());
+                    ck.Domain = Host;//必须写对  
+                    request.CookieContainer.Add(ck);
+                }
+            }
 
             request.KeepAlive = true;
             request.Method = "POST";
@@ -190,7 +224,7 @@ namespace activitytool
         /// <param name="postDataStr">GET数据</param>
         /// <param name="cookie">GET容器</param>
         /// <returns></returns>
-        public static string SendDataByGET(string Url, string postDataStr, ref CookieContainer cookie, string Host = "", string Referer = "",string User_Agent="")
+        public static string SendDataByGET(string Url, string postDataStr, ref CookieContainer cookie, string Host = "", string Referer = "", string User_Agent = "", string addcookies="")
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url + (postDataStr == "" ? "" : "?") + postDataStr);
             if (cookie.Count == 0)

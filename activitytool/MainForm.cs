@@ -28,8 +28,8 @@ namespace activitytool
         }
         private void loadnewini()
         {
-            //string str = DNFWebProxy.SendDataByGET("http://www.tx5d.com/api/g.ashx","");
-            string str = File.ReadAllText(Application.StartupPath + "\\atc.ini", System.Text.Encoding.GetEncoding("utf-8"));
+            string str = DNFWebProxy.SendDataByGET("http://www.tx5d.com/api/v2/g.ashx", "");
+            //string str = File.ReadAllText(Application.StartupPath + "\\atc.ini", System.Text.Encoding.GetEncoding("utf-8"));
             _MJson m = new _MJson(str);
             Lnode = m.GetNode("Date").toListnode();
             label2.Text = m.GetNode("ver").toString();
@@ -72,6 +72,7 @@ namespace activitytool
                 comboBox_region.Items.AddRange(Por.svlist.Select(x => x.t).ToArray());
                 Por.SetActList(Lnode);
                 label1.Text = Por.QQ;
+                pictureBox_Code.Image = Por.GetCodeBitmap();
 
             }
         }
@@ -119,7 +120,7 @@ namespace activitytool
                 case "comboBox_area":
                     {
                         comboBox_role.Items.Clear();
-                        comboBox_role.Items.AddRange(Por.loadRole(Por.svlist[comboBox_region.SelectedIndex].opt_data_array[obj.SelectedIndex].v).ToArray());
+                        comboBox_role.Items.AddRange(Por.loadRole(Por.svlist[comboBox_region.SelectedIndex].opt_data_array[obj.SelectedIndex].v, Por.svlist[comboBox_region.SelectedIndex].opt_data_array[obj.SelectedIndex].t).ToArray());
                     }
                     break;
                 case "comboBox_role":
@@ -134,7 +135,7 @@ namespace activitytool
         public delegate void SetTextCallback(string text);
         public void BoxAddText(string text)
         {
-            if (this.textBox3.InvokeRequired)
+            if (this.textBox_Code.InvokeRequired)
             {
                 SetTextCallback d = new SetTextCallback(BoxAddText);
                 this.Invoke(d, new object[] { text });
@@ -147,6 +148,16 @@ namespace activitytool
         private void button_Click(object sender, EventArgs e)
         {
             AD_webBrowser.Visible = false;
+            if (Por == null)
+            {
+                MessageBox.Show("请先登录！！！");
+                return;
+            }
+            if (!Por.ValueVerify())
+            {
+                MessageBox.Show("请选择角色！！！");
+                return;
+            }
             Button obj = (Button)sender;
             List<int> indexlist = new List<int>();
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
@@ -180,6 +191,17 @@ namespace activitytool
                         document.ExecCommand("ClearAuthenticationCache", false, null);
                         //SuppressWininetBehavior();
                         webBrowser_login.Navigate("https://xui.ptlogin2.qq.com/cgi-bin/xlogin?proxy_url=http://game.qq.com/comm-htdocs/milo/proxy.html&appid=21000127&target=top&s_url=http%3A%2F%2Fdnf.qq.com%2Fgift.shtml&style=20&daid=8");
+                    }
+                    break;
+                case "button_submitCDK":
+                    {
+                        MessageBox.Show( Por.CDKexchange(textBox_CDK.Text,textBox_Code.Text));
+                        pictureBox_Code.Image = Por.GetCodeBitmap();
+                    }
+                    break;
+                case "button_reCode":
+                    {
+                        pictureBox_Code.Image = Por.GetCodeBitmap();
                     }
                     break;
             }

@@ -61,6 +61,24 @@ namespace activitytool.Properties {
         }
         
         /// <summary>
+        ///   查找类似 sCdKey={CDK}&amp;iUin={QQ}&amp;sVerifyCode={Code}&amp;isVerifyCode=1&amp;iVerifyId=21000104&amp;sArea={area}&amp;sPartition=&amp;sRoleId={roleid}&amp;sServiceType=dnf&amp;sRoleName={u2rolename}&amp;md5str={md5str}&amp;ams_checkparam={u2checkparam}&amp;checkparam={u2checkparam}&amp;iActivityId=10502&amp;iFlowId=87571&amp;g_tk={ametk}&amp;e_code=0&amp;g_code=0&amp;eas_url=http%253A%252F%252Fdnf.qq.com%252Fgift.shtml&amp;eas_refer=http%253A%252F%252Fdnf.qq.com%252Fcomm-htdocs%252Flogin%252FloginSuccess.html&amp;xhr=1&amp;sServiceDepartment=x6m5&amp;xhrPostKey=xhr_1503650727860 的本地化字符串。
+        /// </summary>
+        internal static string DNFCDKPost {
+            get {
+                return ResourceManager.GetString("DNFCDKPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 http://x6m5.ams.game.qq.com/ams/ame/ame.php?ameVersion=0.3&amp;sServiceType=dnf&amp;iActivityId=10502&amp;sServiceDepartment=x6m5&amp;sSDID=undefined 的本地化字符串。
+        /// </summary>
+        internal static string DNFCDKURL {
+            get {
+                return ResourceManager.GetString("DNFCDKURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 -----------------------------7dd3901221176
         ///Content-Disposition: form-data; name=&quot;yzm_id&quot;
         ///
