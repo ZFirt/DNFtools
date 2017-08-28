@@ -308,7 +308,7 @@ namespace actini
             atc.ver = textBox1.Text;
             atc.adlink = textBox2.Text;
             string aa = JsonConvert.SerializeObject(atc);
-            if(Post("http://www.tx5d.com/api/p.ashx",aa)=="ok")
+            if(Post("http://www.tx5d.com/api/v2/p.ashx",aa)=="ok")
                 MessageBox.Show("上传成功！！！");
             else MessageBox.Show("错误！！！");
                 

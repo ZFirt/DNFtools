@@ -47,7 +47,7 @@ namespace actini
             subDate_textBox.Text = selected.subDate;
             Ext1_textBox.Text = selected.Ext1;
             Ext2_textBox.Text = selected.Ext2;
-            Ext3_textBox.Text = selected.Ext3;
+            Ext3_textBox.Text =  System.Web.HttpUtility.UrlDecode(selected.Ext3);
             tmpactinfo = selected;
             switch (type)
             {
@@ -77,7 +77,7 @@ namespace actini
                 tmpactinfo.subDate = subDate_textBox.Text;
                 tmpactinfo.Ext1 = Ext1_textBox.Text;
                 tmpactinfo.Ext2 = Ext2_textBox.Text;
-                tmpactinfo.Ext3 = Ext3_textBox.Text;
+                tmpactinfo.Ext3 = System.Web.HttpUtility.UrlEncode(Ext3_textBox.Text);
                 f1.refresh();
                 this.Text = "修改[" + tmpactinfo.actname + "]成功！！！";
                 //this.Close();
@@ -103,7 +103,7 @@ namespace actini
                 tmp.subDate = subDate_textBox.Text;
                 tmp.Ext1 = Ext1_textBox.Text;
                 tmp.Ext2 = Ext2_textBox.Text;
-                tmp.Ext3 = Ext3_textBox.Text;
+                tmp.Ext3 = System.Web.HttpUtility.UrlEncode(Ext3_textBox.Text);
                 f1.AddAtc(tmp, tmpindex);
 
                 //f1.AddAtc(actname_textBox.Text, int.Parse(actid_textBox.Text), int.Parse(start_time_textBox.Text), int.Parse(end_time_textBox.Text), Host_textBox.Text, Referer_textBox.Text, giftname_textBox.Text, int.Parse(model_textBox.Text), tmpindex);
