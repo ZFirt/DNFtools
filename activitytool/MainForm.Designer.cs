@@ -58,6 +58,7 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.button_xinyue = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -187,6 +188,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.panel1.Controls.Add(this.button_xinyue);
             this.panel1.Controls.Add(this.comboBox_area);
             this.panel1.Controls.Add(this.comboBox_region);
             this.panel1.Controls.Add(this.label2);
@@ -225,7 +227,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(38, 416);
+            this.label2.Location = new System.Drawing.Point(44, 435);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 12);
             this.label2.TabIndex = 15;
@@ -233,7 +235,7 @@
             // 
             // button_gourl
             // 
-            this.button_gourl.Location = new System.Drawing.Point(28, 376);
+            this.button_gourl.Location = new System.Drawing.Point(34, 395);
             this.button_gourl.Name = "button_gourl";
             this.button_gourl.Size = new System.Drawing.Size(108, 27);
             this.button_gourl.TabIndex = 14;
@@ -243,7 +245,7 @@
             // 
             // button_submitselect
             // 
-            this.button_submitselect.Location = new System.Drawing.Point(28, 331);
+            this.button_submitselect.Location = new System.Drawing.Point(34, 350);
             this.button_submitselect.Name = "button_submitselect";
             this.button_submitselect.Size = new System.Drawing.Size(108, 38);
             this.button_submitselect.TabIndex = 13;
@@ -253,9 +255,9 @@
             // 
             // button_onekeysubmit
             // 
-            this.button_onekeysubmit.Location = new System.Drawing.Point(28, 288);
+            this.button_onekeysubmit.Location = new System.Drawing.Point(34, 307);
             this.button_onekeysubmit.Name = "button_onekeysubmit";
-            this.button_onekeysubmit.Size = new System.Drawing.Size(108, 37);
+            this.button_onekeysubmit.Size = new System.Drawing.Size(108, 38);
             this.button_onekeysubmit.TabIndex = 12;
             this.button_onekeysubmit.Text = "一键领取";
             this.button_onekeysubmit.UseVisualStyleBackColor = true;
@@ -364,6 +366,16 @@
             this.toolStripStatusLabel3.Size = new System.Drawing.Size(324, 17);
             this.toolStripStatusLabel3.Text = "-------------有问题联系作者！！！邮箱:coolmre@qq.com";
             // 
+            // button_xinyue
+            // 
+            this.button_xinyue.Location = new System.Drawing.Point(34, 263);
+            this.button_xinyue.Name = "button_xinyue";
+            this.button_xinyue.Size = new System.Drawing.Size(108, 38);
+            this.button_xinyue.TabIndex = 18;
+            this.button_xinyue.Text = "心悦专区";
+            this.button_xinyue.UseVisualStyleBackColor = true;
+            this.button_xinyue.Click += new System.EventHandler(this.button_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -422,5 +434,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.WebBrowser AD_webBrowser;
         private System.Windows.Forms.ColumnHeader auto;
+        private System.Windows.Forms.Button button_xinyue;
     }
 }

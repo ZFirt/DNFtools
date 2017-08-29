@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace activitytool
@@ -18,8 +19,9 @@ namespace activitytool
         {
             InitializeComponent();
         }
-        DNFWebProxy Por = null;
+        public DNFWebProxy Por = null;
         Listnode Lnode = null;
+        xinyueForm xinyue = null;
         private void MainForm_Load(object sender, EventArgs e)
         {
             loadnewini();
@@ -67,8 +69,8 @@ namespace activitytool
         {
             string cookieStr = webBrowser_login.Document.Cookie;
             Por = new DNFWebProxy(cookieStr);
-            if(Por!=null)
-            { 
+            if (Por != null)
+            {
                 comboBox_region.Items.AddRange(Por.svlist.Select(x => x.t).ToArray());
                 Por.SetActList(Lnode);
                 label1.Text = Por.QQ;
@@ -87,9 +89,9 @@ namespace activitytool
                 }
 
             }
-            else 
+            else
             {
-                if (groupBox1.Visible ==false)
+                if (groupBox1.Visible == false)
                 {
                     groupBox1.Visible = true;
                 }
@@ -98,7 +100,7 @@ namespace activitytool
             {
 
                 if (webBrowser_login.Document.Url == e.Url)
-                { 
+                {
                     //webBrowser_login.Navigate("http://dnf.qq.com/act/a20130805weixin/cdkey.htm?bg=pe");
                     init();
                 }
@@ -107,9 +109,9 @@ namespace activitytool
         private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox obj = (ComboBox)sender;
-            if (obj.SelectedIndex < 0||obj.Items.Count==0)
+            if (obj.SelectedIndex < 0 || obj.Items.Count == 0)
                 return;
-            switch(obj.Name)
+            switch (obj.Name)
             {
                 case "comboBox_region":
                     {
@@ -168,17 +170,20 @@ namespace activitytool
             {
                 case "button_onekeysubmit":
                     {
-                        Por.OneSubmitAct(BoxAddText);
+                        Thread t = new Thread(OneSubmitAct);
+                        t.Start();
+                        //Por.OneSubmitAct(BoxAddText);
                     }
                     break;
                 case "button_submitselect":
                     {
-                        Por.SubmitAct(indexlist,BoxAddText);
+                        Por.SubmitAct(indexlist, BoxAddText);
                     }
                     break;
                 case "button_gourl":
                     {
-                        indexlist.ForEach(t => {
+                        indexlist.ForEach(t =>
+                        {
                             System.Diagnostics.Process.Start(Por.actnodeList[t].GetNode("actURL").toString());
                         });
                     }
@@ -195,7 +200,7 @@ namespace activitytool
                     break;
                 case "button_submitCDK":
                     {
-                        MessageBox.Show( Por.CDKexchange(textBox_CDK.Text,textBox_Code.Text));
+                        MessageBox.Show(Por.CDKexchange(textBox_CDK.Text, textBox_Code.Text));
                         pictureBox_Code.Image = Por.GetCodeBitmap();
                     }
                     break;
@@ -204,7 +209,29 @@ namespace activitytool
                         pictureBox_Code.Image = Por.GetCodeBitmap();
                     }
                     break;
+                case "button_xinyue":
+                    {
+                        if (xinyue == null || xinyue.IsDisposed)
+                        {
+                            xinyue = new xinyueForm();
+                            xinyue.Owner = this;
+                            xinyue.Show();
+                        }
+                        else
+                        {
+                            xinyue.TopMost = true;
+                            xinyue.TopMost = false;
+
+                        }
+
+                    }
+                    break;
             }
+        }
+        public void OneSubmitAct()
+        {
+            Por.OneSubmitAct(BoxAddText);
+ 
         }
         private void AD_webBrowser_NewWindow(object sender, CancelEventArgs e)
         {

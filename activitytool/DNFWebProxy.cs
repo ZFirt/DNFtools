@@ -15,6 +15,7 @@ namespace activitytool
         List<activitytool.DNFHelper.ServerSelect> svlist_value = null;
         List<string> roleInfo = null;
         Dictionary<string, string> sSDIDList = new Dictionary<string, string>();
+        Listnode tasklist = null;
         public DNFWebProxy(CookieContainer cookie)
             : base(cookie)
         {
@@ -301,6 +302,134 @@ namespace activitytool
         {
             return DowloadCheckImg("http://captcha.qq.com/getimage?aid=21000104", myCookieContainer);
         }
+
+        //心悦专区================
+
+        public void ryzcsSDID()
+        {
+            string ams_actdesc = SendDataByGET("http://apps.game.qq.com/comm-htdocs/js/ams/v0.2R02/act/49210/act.desc.js", "", ref myCookieContainer, "apps.game.qq.com", "http://xinyue.qq.com/act/pc/a20160623dnfryzc/index.shtml");
+            _MJson m = new _MJson(ams_actdesc);
+            sSDIDList["http://apps.game.qq.com/comm-htdocs/js/ams/v0.2R02/act/49210/act.desc.js"] = m.GetNode("sSDID").toString();
+        }
+        public string AmsSubmit(string url, string postdata)
+        {
+            return SendDataByPost(url, postdata, ref myCookieContainer, "apps.game.qq.com", "http://apps.game.qq.com/ams/postMessage.html");
+        }
+        public string XinyueGetint()
+        {
+            string iActivityId = "54842";
+            string iFlowId = "280421";
+            string posturl = Properties.Resources.ameURL
+                .Replace("{sSDID}", sSDIDList["http://apps.game.qq.com/comm-htdocs/js/ams/v0.2R02/act/49210/act.desc.js"])
+                .Replace("{actid}", iActivityId)
+                ;
+            string postdata = Properties.Resources.ryzcPostdata
+                .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                .Replace("{actid}", iActivityId)
+                .Replace("{flowid}", iFlowId);
+            string rseult = AmsSubmit(posturl,postdata);
+            return Regex.Match(rseult, "(?<=\"sOutValue2\":\").*?(?=\")").Value;
+        }
+
+        public string XinyueGetRYint()
+        {
+            string iActivityId = "54842";
+            string iFlowId = "281012";
+            string posturl = Properties.Resources.ameURL
+                .Replace("{sSDID}", sSDIDList["http://apps.game.qq.com/comm-htdocs/js/ams/v0.2R02/act/49210/act.desc.js"])
+                .Replace("{actid}", iActivityId)
+                ;
+            string postdata = Properties.Resources.ryzcPostdata
+                .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                .Replace("{actid}", iActivityId)
+                .Replace("{flowid}", iFlowId);
+            string rseult = AmsSubmit(posturl, postdata);
+            return Regex.Match(rseult, "(?<=\"sOutValue1\":\").*?(?=\")").Value;
+        }
+        public string XinyueGetRYtask()
+        {
+            string iActivityId = "54842";
+            string iFlowId = "280926";
+            string posturl = Properties.Resources.ameURL
+                .Replace("{sSDID}", sSDIDList["http://apps.game.qq.com/comm-htdocs/js/ams/v0.2R02/act/49210/act.desc.js"])
+                .Replace("{actid}", iActivityId)
+                ;
+            string postdata = Properties.Resources.ryzcPostdata
+                .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                .Replace("{actid}", iActivityId)
+                .Replace("{flowid}", iFlowId);
+            string rseult = AmsSubmit(posturl, postdata);
+            string data = Regex.Match(rseult, "(?<=\"data\":\").*?(?=\"})").Value.Replace("\\\"", "\"").Replace("\\\\", "\\");
+            _MJson m = new _MJson(data);
+            Listnode tasklist = m.toListnode();
+            return data;
+        }
+
+        public Dictionary<string, int> XinyueGetRYProp()
+        {
+            string iActivityId = "54842";
+            string iFlowId = "280741";
+            string posturl = Properties.Resources.ameURL
+                .Replace("{sSDID}", sSDIDList["http://apps.game.qq.com/comm-htdocs/js/ams/v0.2R02/act/49210/act.desc.js"])
+                .Replace("{actid}", iActivityId)
+                ;
+            string postdata = Properties.Resources.ryzcPostdata
+                .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                .Replace("{actid}", iActivityId)
+                .Replace("{flowid}", iFlowId);
+            string rseult = AmsSubmit(posturl, postdata);
+            _MJson m = new _MJson(rseult);
+            Dictionary<string, int> card = new Dictionary<string, int>();
+            card["two_score"] = m.GetNode("sOutValue1").toInt() - m.GetNode("sOutValue5").toInt();
+            card["free_do"] = m.GetNode("sOutValue3").toInt() - m.GetNode("sOutValue4").toInt();
+            card["rd_do"] = m.GetNode("sOutValue6").toInt() - m.GetNode("sOutValue7").toInt();
+            return card;
+        }
+
+        public Dictionary<string, string> XinyueGetRYBinding()
+        {
+            string iActivityId = "54842";
+            string iFlowId = "280301";
+            string posturl = Properties.Resources.ameURL
+                .Replace("{sSDID}", sSDIDList["http://apps.game.qq.com/comm-htdocs/js/ams/v0.2R02/act/49210/act.desc.js"])
+                .Replace("{actid}", iActivityId)
+                ;
+            string postdata = Properties.Resources.ryzcPostdata
+                .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                .Replace("{actid}", iActivityId)
+                .Replace("{flowid}", iFlowId);
+            string rseult = AmsSubmit(posturl, postdata);
+            _MJson m = new _MJson(rseult);
+            Dictionary<string, string> binding = new Dictionary<string, string>();
+            binding["roleId"] = m.GetNode("FroleId").toString();
+            binding["roleName"] =System.Web.HttpUtility.UrlDecode(m.GetNode("FroleName").toString());
+            binding["areaName"] = m.GetNode("FareaName").toString();
+
+            return binding;
+        }
+        public string XinyueRYBinding()
+        {
+            string iActivityId = "54842";
+            string iFlowId = "280302";
+            string posturl = Properties.Resources.ameURL
+                .Replace("{sSDID}", sSDIDList["http://apps.game.qq.com/comm-htdocs/js/ams/v0.2R02/act/49210/act.desc.js"])
+                .Replace("{actid}", iActivityId)
+                ;
+            string postdata = Properties.Resources.ryzcbindPostdata
+                .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                .Replace("{actid}", iActivityId)
+                .Replace("{flowid}", iFlowId)
+                .Replace("{area}", Value_Dictionary["{area}"])
+                .Replace("{roleid}", Value_Dictionary["{roleid}"])
+                .Replace("{ametk}", Value_Dictionary["{ametk}"])
+                .Replace("{checkparam}", Value_Dictionary["{u2checkparam}"])
+                .Replace("{u1areaname}", Value_Dictionary["{u1areaname}"])
+                .Replace("{u1rolename}", Value_Dictionary["{u1rolename}"])
+                .Replace("{md5str}", Value_Dictionary["{md5str}"]);
+            string rseult = AmsSubmit(posturl, postdata);
+            return Regex.Match(rseult, "(?<=\"ret\":\").*?(?=\")").Value;
+        }
+
 
     }
 }

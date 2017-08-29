@@ -61,6 +61,15 @@ namespace activitytool.Properties {
         }
         
         /// <summary>
+        ///   查找类似 http://apps.game.qq.com/ams/ame/ame.php?ameVersion=0.3&amp;sServiceType=tgclub&amp;iActivityId={actid}&amp;sServiceDepartment=xinyue&amp;set_info=xinyue&amp;sSDID={sSDID}&amp;isXhrPost=true 的本地化字符串。
+        /// </summary>
+        internal static string ameURL {
+            get {
+                return ResourceManager.GetString("ameURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 sCdKey={CDK}&amp;iUin={QQ}&amp;sVerifyCode={Code}&amp;isVerifyCode=1&amp;iVerifyId=21000104&amp;sArea={area}&amp;sPartition=&amp;sRoleId={roleid}&amp;sServiceType=dnf&amp;sRoleName={u2rolename}&amp;md5str={md5str}&amp;ams_checkparam={u2checkparam}&amp;checkparam={u2checkparam}&amp;iActivityId=10502&amp;iFlowId=87571&amp;g_tk={ametk}&amp;e_code=0&amp;g_code=0&amp;eas_url=http%253A%252F%252Fdnf.qq.com%252Fgift.shtml&amp;eas_refer=http%253A%252F%252Fdnf.qq.com%252Fcomm-htdocs%252Flogin%252FloginSuccess.html&amp;xhr=1&amp;sServiceDepartment=x6m5&amp;xhrPostKey=xhr_1503650727860 的本地化字符串。
         /// </summary>
         internal static string DNFCDKPost {
@@ -241,6 +250,24 @@ namespace activitytool.Properties {
         internal static string Reglz {
             get {
                 return ResourceManager.GetString("Reglz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 iActivityId={actid}&amp;iFlowId={flowid}&amp;g_tk={ametk}&amp;e_code=0&amp;g_code=0&amp;eas_url=http%253A%252F%252Fxinyue.qq.com%252Fact%252Fpc%252Fa20160623dnfryzc%252F&amp;eas_refer=&amp;xhr=1&amp;sServiceDepartment=xinyue&amp;sServiceType=dnf&amp;sArea={area}&amp;sPartition={area}&amp;sRoleId={roleid}&amp;sAreaName={u1areaname}&amp;sRoleName={u1rolename}&amp;md5str={md5str}&amp;ams_checkparam={checkparam}&amp;checkparam={checkparam}&amp;xhrPostKey=xhr_1503995858746 的本地化字符串。
+        /// </summary>
+        internal static string ryzcbindPostdata {
+            get {
+                return ResourceManager.GetString("ryzcbindPostdata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 iActivityId={actid}&amp;iFlowId={flowid}&amp;g_tk={ametk}&amp;e_code=0&amp;g_code=0&amp;eas_url=http%253A%252F%252Fxinyue.qq.com%252Fact%252Fpc%252Fa20160623dnfryzc%252F&amp;eas_refer=&amp;xhr=1&amp;sServiceDepartment=xinyue&amp;sServiceType=tgclub&amp;xhrPostKey=xhr_1503895011297 的本地化字符串。
+        /// </summary>
+        internal static string ryzcPostdata {
+            get {
+                return ResourceManager.GetString("ryzcPostdata", resourceCulture);
             }
         }
     }
