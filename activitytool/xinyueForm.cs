@@ -14,24 +14,29 @@ namespace activitytool
 {
     public partial class xinyueForm : Form
     {
-        public xinyueForm()
-        {
-            InitializeComponent();
-        }
         MainForm Ow = null;
-        private Thread t = null;
+        private Thread maint = null;
+        Dictionary<string, int> card = null;
+        Listnode tasklist = null;
+        bool auto = false;
+        public xinyueForm(bool val=false)
+        {
+            
+            InitializeComponent();
+            auto = val;
+        }
         private void xinyueForm_Load(object sender, EventArgs e)
         {
             
             // 增加判断，避免每次都开辟一个线程
-            if (t == null)
+            if (maint == null)
             {
-                t = new Thread(inti);
-                t.Start();
+                maint = new Thread(inti);
+                maint.Start();
             }
-            if (t.ThreadState == ThreadState.Suspended) // 如果被挂起了，就唤醒
+            if (maint.ThreadState == ThreadState.Suspended) // 如果被挂起了，就唤醒
             {
-                t.Resume();
+                maint.Resume();
             }
 
 
@@ -40,24 +45,48 @@ namespace activitytool
         {
             Ow = (MainForm)this.Owner;
             Ow.Por.ryzcsSDID();
+            relabel();
+            relistView_task();
+            if (auto)
+            {
+                autosubmit();
+            }
+        }
+        public void autosubmit()
+        {
+            Ow.Por.XinyueRYBinding();
+            onesubmit();
+        }
+        private void relabel()
+        {
             SetlabelText(label_int, "心悦点:" + Ow.Por.XinyueGetint() + "  荣誉点：" + Ow.Por.XinyueGetRYint());
             Dictionary<string, string> binding = Ow.Por.XinyueGetRYBinding();
-            SetlabelText(label_binding,"已绑定:" + binding["areaName"] + "-" + binding["roleName"]);
+            if (binding != null)
+            {
+                SetlabelText(label_binding, "已绑定:" + binding["areaName"] + "-" + binding["roleName"]);
+            }
+            else
+            {
+                SetlabelText(label_binding, "未绑定角色");
+            }
+            
+            card = Ow.Por.XinyueGetRYProp();
+            SetlabelText(label_prop, "道具：双倍卡X" + card["two_score"] + "  免做卡X" + card["free_do"] + "  刷新卡X" + card["rd_do"]);
+        }
+        private void relistView_task()
+        {
             string re = Ow.Por.XinyueGetRYtask();
             _MJson m = new _MJson(re);
-            Listnode tasklist = m.toListnode();
+            tasklist = m.toListnode();
             tasklist.val.ForEach(t =>
             {
                 ListViewItem lvi = new ListViewItem();
                 lvi.Text = t.GetNode("id").toString();
                 lvi.SubItems.Add(t.GetNode("task_name").toString());
                 lvi.SubItems.Add(t.GetNode("score").toString());
-                lvi.SubItems.Add(t.GetNode("status").toString());
-                SetlistView(listView_task,lvi);
+                lvi.SubItems.Add(t.GetNode("status").toString() == "0" ? "未完成" : "已完成");
+                SetlistView(listView_task, lvi);
             });
-            Dictionary<string, int> card = Ow.Por.XinyueGetRYProp();
-            SetlabelText(label_prop, "道具：双倍卡X" + card["two_score"] + "  免做卡X" + card["free_do"] + "  刷新卡X" + card["rd_do"]);
- 
         }
         public delegate void SetTextCallback(object sender,string text);
         public void SetlabelText(object sender, string text)
@@ -74,6 +103,8 @@ namespace activitytool
             }
         }
         public delegate void SetListViewItemCallback(object sender, ListViewItem text);
+
+        
         public void SetlistView(object sender, ListViewItem lvi)
         {
             ListView obj = (ListView)sender;
@@ -90,6 +121,13 @@ namespace activitytool
         private void button_Click(object sender, EventArgs e)
         {
             Button obj = (Button)sender;
+            List<int> indexlist = new List<int>();
+            if (maint.ThreadState != ThreadState.Stopped)
+                return;
+            for (int i = 0; i < listView_task.SelectedItems.Count; i++)
+            {
+                indexlist.Add(listView_task.SelectedItems[i].Index);
+            }
             switch (obj.Name)
             {
                 case "button_binding": 
@@ -97,7 +135,64 @@ namespace activitytool
                         Ow.Por.XinyueRYBinding();
                     }
                     break;
+                case "button_onesubmit":
+                    {
+                        Thread onet = new Thread(onesubmit);
+                        onet.Start();
+                    }
+                    break;
+                case "button_refresh":
+                    {
+                        if (Ow.Por.XinyueRYrefresh() == "0")
+                        {
+                            listView_task.Items.Clear();
+                            Thread taskt = new Thread(relistView_task);
+                            taskt.Start();
+                        }
+                        else
+                        {
+                            MessageBox.Show("刷新任务失败！！！");
+                        }
+                    }
+                    break;
+                case "button_submitS":
+                    {
+                        Ow.Por.XinyueRYtasksubmit(indexlist,"0",Ow.BoxAddText);
+                    }
+                    break;
+                case "button_freesubmit":
+                    {
+                        Ow.Por.XinyueRYtasksubmit(indexlist, "1", Ow.BoxAddText);
+                    }
+                    break;
+                case "button_towscore":
+                    {
+                        Ow.Por.XinyueRYtasksubmit(indexlist, "2", Ow.BoxAddText);
+                    }
+                    break;
             }
+            Thread t = new Thread(relabel);
+            t.Start();
+        }
+        private void onesubmit()
+        {
+            tasklist.val.ForEach(tmp =>
+            {
+                if (tmp.GetNode("status").toString() == "0")
+                {
+                    if (tmp.GetNode("score").toString() == "3" && checkBox_twoscore.Checked == true && card["two_score"] > 0)
+                    {
+                        Ow.Por.XinyueRYtasksubmit(new List<int> { tasklist.val.IndexOf(tmp) }, "2", Ow.BoxAddText);
+                    }
+                    else
+                    {
+                        Ow.Por.XinyueRYtasksubmit(new List<int> { tasklist.val.IndexOf(tmp) }, "0", Ow.BoxAddText);
+                    }
+                    Thread.Sleep(3000);
+
+                }
+
+            });
         }
     }
 }

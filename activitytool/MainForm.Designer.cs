@@ -41,6 +41,7 @@
             this.gift = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.auto = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button_xinyue = new System.Windows.Forms.Button();
             this.comboBox_area = new System.Windows.Forms.ComboBox();
             this.comboBox_region = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -58,7 +59,6 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.button_xinyue = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -76,9 +76,7 @@
             this.webBrowser_login.Name = "webBrowser_login";
             this.webBrowser_login.Size = new System.Drawing.Size(505, 464);
             this.webBrowser_login.TabIndex = 0;
-            this.webBrowser_login.Url = new System.Uri("https://xui.ptlogin2.qq.com/cgi-bin/xlogin?proxy_url=http://game.qq.com/comm-htdo" +
-        "cs/milo/proxy.html&appid=21000127&target=top&s_url=http%3A%2F%2Fdnf.qq.com%2Fgif" +
-        "t.shtml&style=20&daid=8", System.UriKind.Absolute);
+            this.webBrowser_login.Url = new System.Uri(resources.GetString("webBrowser_login.Url"), System.UriKind.Absolute);
             this.webBrowser_login.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_login_DocumentCompleted);
             // 
             // comboBox_role
@@ -203,6 +201,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(161, 464);
             this.panel1.TabIndex = 10;
+            // 
+            // button_xinyue
+            // 
+            this.button_xinyue.Location = new System.Drawing.Point(34, 263);
+            this.button_xinyue.Name = "button_xinyue";
+            this.button_xinyue.Size = new System.Drawing.Size(108, 38);
+            this.button_xinyue.TabIndex = 18;
+            this.button_xinyue.Text = "心悦专区";
+            this.button_xinyue.UseVisualStyleBackColor = true;
+            this.button_xinyue.Click += new System.EventHandler(this.button_Click);
             // 
             // comboBox_area
             // 
@@ -366,16 +374,6 @@
             this.toolStripStatusLabel3.Size = new System.Drawing.Size(324, 17);
             this.toolStripStatusLabel3.Text = "-------------有问题联系作者！！！邮箱:coolmre@qq.com";
             // 
-            // button_xinyue
-            // 
-            this.button_xinyue.Location = new System.Drawing.Point(34, 263);
-            this.button_xinyue.Name = "button_xinyue";
-            this.button_xinyue.Size = new System.Drawing.Size(108, 38);
-            this.button_xinyue.TabIndex = 18;
-            this.button_xinyue.Text = "心悦专区";
-            this.button_xinyue.UseVisualStyleBackColor = true;
-            this.button_xinyue.Click += new System.EventHandler(this.button_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -387,7 +385,7 @@
             this.Controls.Add(this.webBrowser_login);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "【冥域】DNF活动小助手";
+            this.Text = "【一步】DNF活动小助手";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

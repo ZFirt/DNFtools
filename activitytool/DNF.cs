@@ -473,7 +473,7 @@ namespace activitytool
 
 			return Server;
 		}
-		public Dictionary<string, Dictionary<string, string>> GetTask_list_ids()
+        public static Dictionary<string, Dictionary<string, string>> GetTask_list_ids()
 		{
 			var task_list_ids = new Dictionary<string, Dictionary<string, string>>
 			{

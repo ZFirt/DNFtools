@@ -6,9 +6,11 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Web;
 using System.Windows.Forms;
 
 namespace activitytool
@@ -74,6 +76,15 @@ namespace activitytool
                 comboBox_region.Items.AddRange(Por.svlist.Select(x => x.t).ToArray());
                 Por.SetActList(Lnode);
                 label1.Text = Por.QQ;
+                if (File.Exists(Por.QQ + ".ini"))
+                {
+                    string[] tmpstr = File.ReadAllLines(Por.QQ + ".ini");
+                    comboBox_region.SelectedIndex = int.Parse(tmpstr[0]);
+                    comboBox_area.SelectedIndex = int.Parse(tmpstr[1]);
+                    comboBox_role.SelectedIndex = int.Parse(tmpstr[2]);
+                    File.WriteAllText(Por.QQ + ".ini", comboBox_region.SelectedIndex + Environment.NewLine + comboBox_area.SelectedIndex + Environment.NewLine + comboBox_role.SelectedIndex);
+
+                }
                 pictureBox_Code.Image = Por.GetCodeBitmap();
 
             }
@@ -81,7 +92,7 @@ namespace activitytool
 
         private void webBrowser_login_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (webBrowser_login.Url.ToString().IndexOf("https://xui.ptlogin2.qq.com/") == 0)
+            if (webBrowser_login.Url.ToString().IndexOf("http://ui.ptlogin2.qq.com") == 0)
             {
                 if (groupBox1.Visible == true)
                 {
@@ -96,7 +107,7 @@ namespace activitytool
                     groupBox1.Visible = true;
                 }
             }
-            if (webBrowser_login.Url.ToString().IndexOf("http://dnf.qq.com/gift.shtml") == 0)
+            if (webBrowser_login.Url.ToString().IndexOf("http://game.qq.com/comm-htdocs/login/loginSuccess.html") == 0)
             {
 
                 if (webBrowser_login.Document.Url == e.Url)
@@ -150,6 +161,17 @@ namespace activitytool
         private void button_Click(object sender, EventArgs e)
         {
             AD_webBrowser.Visible = false;
+            Button obj = (Button)sender;
+            if (obj.Name == "button_loginout")
+            {
+                Por = null;
+                label1.Text = "未登录";
+                HtmlDocument document = webBrowser_login.Document;
+                document.ExecCommand("ClearAuthenticationCache", false, null);
+                //SuppressWininetBehavior();
+                webBrowser_login.Navigate("http://ui.ptlogin2.qq.com/cgi-bin/login?appid=21000115&f_url=loginerroralert&target=self&qtarget=self&s_url=http%3A//game.qq.com/comm-htdocs/login/loginSuccess.html&no_verifyimg=1&qlogin_jumpname=jump&daid=8");
+                return;
+            }
             if (Por == null)
             {
                 MessageBox.Show("请先登录！！！");
@@ -160,7 +182,6 @@ namespace activitytool
                 MessageBox.Show("请选择角色！！！");
                 return;
             }
-            Button obj = (Button)sender;
             List<int> indexlist = new List<int>();
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
             {
@@ -170,6 +191,18 @@ namespace activitytool
             {
                 case "button_onekeysubmit":
                     {
+                        if (xinyue == null || xinyue.IsDisposed)
+                        {
+                            xinyue = new xinyueForm(true);
+                            xinyue.Owner = this;
+                            xinyue.Show();
+                        }
+                        else
+                        {
+                            xinyue.TopMost = true;
+                            xinyue.TopMost = false;
+
+                        }
                         Thread t = new Thread(OneSubmitAct);
                         t.Start();
                         //Por.OneSubmitAct(BoxAddText);
@@ -186,16 +219,6 @@ namespace activitytool
                         {
                             System.Diagnostics.Process.Start(Por.actnodeList[t].GetNode("actURL").toString());
                         });
-                    }
-                    break;
-                case "button_loginout":
-                    {
-                        Por = null;
-                        label1.Text = "未登录";
-                        HtmlDocument document = webBrowser_login.Document;
-                        document.ExecCommand("ClearAuthenticationCache", false, null);
-                        //SuppressWininetBehavior();
-                        webBrowser_login.Navigate("https://xui.ptlogin2.qq.com/cgi-bin/xlogin?proxy_url=http://game.qq.com/comm-htdocs/milo/proxy.html&appid=21000127&target=top&s_url=http%3A%2F%2Fdnf.qq.com%2Fgift.shtml&style=20&daid=8");
                     }
                     break;
                 case "button_submitCDK":
@@ -239,6 +262,8 @@ namespace activitytool
             string currentUri = ((WebBrowser)sender).Document.ActiveElement.GetAttribute("href");
             System.Diagnostics.Process.Start(currentUri);
         }
+        [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)] 
+        public static extern bool InternetSetCookie(string lpszUrlName, string lbszCookieName, string lpszCookieData); 
 
         [System.Runtime.InteropServices.DllImport("wininet.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
         public static extern bool InternetSetOption(int hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);

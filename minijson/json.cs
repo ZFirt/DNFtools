@@ -28,26 +28,33 @@ namespace MiniJson
         }
         public node GetNode(string name)
         {
-            int wz = 0, tz = 0;
-            string attrName = "\"" + name + "\":";
-            wz = val.IndexOf(attrName);
-            if (wz == -1)
-                return null;
-            string tmp;
-            tmp = val.Substring(wz + attrName.Length, 1);
-            if (tmp != "[" && tmp != "{")
-                if (tmp == "\"")
-                    tz = val.IndexOfAny(new char[] { '\"' }, wz + attrName.Length + 1);
+            try
+            {
+                int wz = 0, tz = 0;
+                string attrName = "\"" + name + "\":";
+                wz = val.IndexOf(attrName);
+                if (wz == -1)
+                    return null;
+                string tmp;
+                tmp = val.Substring(wz + attrName.Length, 1);
+                if (tmp != "[" && tmp != "{")
+                    if (tmp == "\"")
+                        tz = val.IndexOfAny(new char[] { '\"' }, wz + attrName.Length + 1);
+                    else
+                        tz = val.IndexOfAny(new char[] { ',', '}' }, wz);
                 else
-                    tz = val.IndexOfAny(new char[] { ',', '}' }, wz);
-            else
-                tz = indeOfBracket(val, tmp, wz + attrName.Length + 1) + 1;
-            if (tz == -1)
+                    tz = indeOfBracket(val, tmp, wz + attrName.Length + 1) + 1;
+                if (tz == -1)
+                    return null;
+                //if (tmp != "\"")
+                tmp = val.Substring(wz + attrName.Length, tz - attrName.Length - wz);
+                //else tmp = val.Substring(wz + attrName.Length + 1, tz - attrName.Length - wz - 2);
+                return new node(tmp);
+            }
+            catch
+            {
                 return null;
-            //if (tmp != "\"")
-            tmp = val.Substring(wz + attrName.Length, tz - attrName.Length - wz);
-            //else tmp = json.Substring(wz + attrName.Length + 1, tz - attrName.Length - wz - 2);
-            return new node(tmp);
+            }
 
         }
         public static int indeOfBracket(string jsonstr, string bk, int beginindex, int endindex = 0)
@@ -114,10 +121,21 @@ namespace MiniJson
         }
         public int toInt()
         {
+
+            if (val.IndexOf("\"") > -1)
+            {
+                string str = val.Replace("\"", "");
+                return int.Parse(str);
+            }
             return int.Parse(val);
         }
         public double toDouble()
         {
+            if (val.IndexOf("\"") > -1)
+            {
+                string str = val.Replace("\"", "");
+                return double.Parse(str);
+            }
             return double.Parse(val);
         }
         public DateTime toDateTime()
@@ -196,6 +214,7 @@ namespace MiniJson
         public _MJson(string jsonstr)
         {
             json = jsonstr;
+            val = jsonstr;
 
 
         }
