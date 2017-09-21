@@ -115,6 +115,7 @@ namespace activitytool
                 {
                     result = GetGift(t);
                     AddText(Analysis(t, result));
+                    System.Threading.Thread.Sleep(500);
                 });
 
         }
@@ -228,7 +229,7 @@ namespace activitytool
                         string ext1 = act.GetNode("Ext1").toString();
                         if (!sSDIDList.ContainsKey(ext1))
                         {
-                            string ams_actdesc = SendDataByGET(ext1, "", ref myCookieContainer, act.GetNode("Ext2").toString(), act.GetNode("Ext1").toString());
+                            string ams_actdesc = SendDataByGET(ext1, "", ref myCookieContainer, act.GetNode("Ext2").toString(), act.GetNode("Ext3").toString());
                             _MJson m = new _MJson(ams_actdesc);
                             sSDIDList[ext1] = m.GetNode("sSDID").toString();
 

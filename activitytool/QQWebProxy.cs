@@ -52,7 +52,7 @@ namespace activitytool
                     Value_Dictionary["{ametk}"] = ameCSRFToken(cookieNameValue[1].Trim().ToString());
                 }
             }
-            QQ_value = int.Parse(Value_Dictionary["{pt2gguin}"].Substring(1, Value_Dictionary["{pt2gguin}"].Length - 1)).ToString();
+            QQ_value = long.Parse(Value_Dictionary["{pt2gguin}"].Substring(1, Value_Dictionary["{pt2gguin}"].Length - 1)).ToString();
             Value_Dictionary["{QQ}"] = QQ_value;
             
 

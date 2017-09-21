@@ -70,7 +70,9 @@ namespace activitytool
         private void init()
         {
             string cookieStr = webBrowser_login.Document.Cookie;
+            //MessageBox.Show(cookieStr);
             Por = new DNFWebProxy(cookieStr);
+            //MessageBox.Show(Newtonsoft.Json.JsonConvert.SerializeObject(Por));
             if (Por != null)
             {
                 comboBox_region.Items.AddRange(Por.svlist.Select(x => x.t).ToArray());
@@ -82,7 +84,7 @@ namespace activitytool
                     comboBox_region.SelectedIndex = int.Parse(tmpstr[0]);
                     comboBox_area.SelectedIndex = int.Parse(tmpstr[1]);
                     comboBox_role.SelectedIndex = int.Parse(tmpstr[2]);
-                    File.WriteAllText(Por.QQ + ".ini", comboBox_region.SelectedIndex + Environment.NewLine + comboBox_area.SelectedIndex + Environment.NewLine + comboBox_role.SelectedIndex);
+                    
 
                 }
                 pictureBox_Code.Image = Por.GetCodeBitmap();
@@ -139,6 +141,7 @@ namespace activitytool
                 case "comboBox_role":
                     {
                         Por.SetRoleId(obj.SelectedIndex);
+                        File.WriteAllText(Por.QQ + ".ini", comboBox_region.SelectedIndex + Environment.NewLine + comboBox_area.SelectedIndex + Environment.NewLine + comboBox_role.SelectedIndex);
                     }
                     break;
 

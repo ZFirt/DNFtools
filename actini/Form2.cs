@@ -104,8 +104,8 @@ namespace actini
                 tmp.Ext1 = Ext1_textBox.Text;
                 tmp.Ext2 = Ext2_textBox.Text;
                 tmp.Ext3 = System.Web.HttpUtility.UrlEncode(Ext3_textBox.Text);
-                f1.AddAtc(tmp, tmpindex);
-
+                //f1.AddAtc(tmp, tmpindex);
+                f1.AddAtc(tmp, tmpactinfo, tmpindex);
                 //f1.AddAtc(actname_textBox.Text, int.Parse(actid_textBox.Text), int.Parse(start_time_textBox.Text), int.Parse(end_time_textBox.Text), Host_textBox.Text, Referer_textBox.Text, giftname_textBox.Text, int.Parse(model_textBox.Text), tmpindex);
                 //this.Close();
             }

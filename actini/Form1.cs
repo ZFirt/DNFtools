@@ -32,8 +32,46 @@ namespace actini
         {
             AddAtc(new actinfo() { actname = atcname, actid = actid, start_time = start_time, end_time = end_time, Host = Host, Referer = Referer, giftname = giftname, model = model }, index);
         }
+
+        public void AddAtc(actinfo info, actinfo Owinfo, int index = -1)
+        {
+            if (index == -1)
+            {
+                int i = -1;
+                i = atc.Date.IndexOf(Owinfo);
+                if (i > -1)
+                {
+                    atc.Date.Add(info);
+                    refresh();
+                    return;
+                }
+                foreach (var v in tmpactinfoList)
+                {
+                    if (v.atcExt == null)
+                        continue;
+                    i = v.atcExt.IndexOf(Owinfo);
+                    if (i > -1)
+                    {
+                        v.atcExt.Add(info);
+                        refresh();
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                if (tmpactinfoList[index].atcExt == null)
+                {
+                    tmpactinfoList[index].atcExt = new List<actinfo>();
+                }
+                tmpactinfoList[index].atcExt.Add(info);
+                refresh();
+            }
+        }
         public void AddAtc(actinfo info, int index = -1)
         {
+
+
             if (index == -1)
             {
                 atc.Date.Add(info);
