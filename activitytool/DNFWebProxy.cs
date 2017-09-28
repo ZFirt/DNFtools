@@ -101,8 +101,11 @@ namespace activitytool
             string result = "";
             foreach (var tmp in indexlist)
             {
-                result = GetGift(actnodeList[tmp]);
-                AddText(Analysis(actnodeList[tmp], result));
+                if (actnodeList[tmp].GetNode("autoSub").toInt() != 0) 
+                { 
+                    result = GetGift(actnodeList[tmp]);
+                    AddText(Analysis(actnodeList[tmp], result));
+                }
             }
 
         }
@@ -133,13 +136,36 @@ namespace activitytool
                         {
                             if (m.GetNode("msg").toString() == "success")
                             {
-                                if (m.GetNode("op").toString() == "online_cdk")
-                                    result.Append("\r\n======CDK=======\r\n" + m.GetNode("cdkey").toString() + "\r\n================");
-                                result.Append("\r\n" + DateTime.Now.ToString() + ",领取【" + m.GetNode("actname").toString() + "】成功");
+                                string op = m.GetNode("op").toString();
+                                switch (op)
+                                {
+                                    case "online_cdk": { result.Append("\r\n======CDK=======\r\n" + m.GetNode("cdkey").toString() + "\r\n================"); }; break;
+                                    case "add_money": { result.Append("\r\n======num=======\r\n" + m.GetNode("num").toString() + "\r\n================"); }; break;
+                                    case "lottery_route_must": { result.Append("\r\n======抽奖=======\r\n" + m.GetNode("cdkey").toString() + "\r\n" + m.GetNode("name").toString() + "\r\n================"); }; break;
+                                    case "view_money": { result.Append("\r\n======money=======\r\n" + m.GetNode("data").GetNode("op",true).toString() + "\r\n================"); }; break;
+                                    case "query_gift_list": 
+                                        {
+                                            result.Append("\r\n======礼物列表=======\r\n");
+                                            Listnode oplist = m.GetNode("data").GetNode("op", true).toListnode();
+                                            oplist.val.ForEach(t => {
+                                                result.AppendFormat("\r\n|->{0}<-|{1}│{2}│\r\n", t.GetNode("info").toString(), t.GetNode("name").toString(), GetTime(t.GetNode("time").toString()).ToString());
+                                            });
+                                            result.Append("\r\n=====================\r\n");
+                                        }; break;
+                                    //case "": { }; break;
+                                    //case "": { }; break;
+                                    //case "": { }; break;
+                                    //case "": { }; break;
+
+                                }
+
+                                //if (m.GetNode("op").toString() == "online_cdk")
+                                //    result.Append("\r\n======CDK=======\r\n" + m.GetNode("cdkey").toString() + "\r\n================");
+                                result.Append("\r\n" + DateTime.Now.ToString() + ",XXOO【" + m.GetNode("actname").toString() + "】成功");
                             }
                             else
                             {
-                                result.Append("\r\n" + DateTime.Now.ToString() + ",领取【" + m.GetNode("actname").toString() + "】失败，原因：" + m.GetNode("msg").toString());
+                                result.Append("\r\n" + DateTime.Now.ToString() + ",XXOO【" + m.GetNode("actname").toString() + "】失败，原因：" + m.GetNode("msg").toString());
                             }
                         }
                         break;
@@ -223,7 +249,9 @@ namespace activitytool
             string addcookies = "";
             switch (act.GetNode("model").toString())
             {
-                case "1": { } break;
+                case "1": { 
+                        au = act.GetNode("Ext1").toString();
+                        ; } break;
                 case "2":
                     {
                         string ext1 = act.GetNode("Ext1").toString();

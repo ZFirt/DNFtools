@@ -26,7 +26,7 @@ namespace MiniJson
             if (val.IndexOf(" ") > -1)
                 val = val.Replace(" ", "");
         }
-        public node GetNode(string name)
+        public node GetNode(string name, bool child=false)
         {
             try
             {
@@ -36,6 +36,9 @@ namespace MiniJson
                 if (wz == -1)
                     return null;
                 string tmp;
+                int rb=0, lb = 0;
+                do{
+                    if (rb != lb) wz = val.IndexOf(attrName,tz);
                 tmp = val.Substring(wz + attrName.Length, 1);
                 if (tmp != "[" && tmp != "{")
                     if (tmp == "\"")
@@ -46,6 +49,13 @@ namespace MiniJson
                     tz = indeOfBracket(val, tmp, wz + attrName.Length + 1) + 1;
                 if (tz == -1)
                     return null;
+                if (!child) 
+                    break;
+                lb=val.Substring(0,wz).Count(t=>t=='{');
+                rb=val.Substring(0,wz).Count(t=>t=='}');
+                if(val[0]=='{')
+                    lb--;
+                } while (rb != lb);
                 //if (tmp != "\"")
                 tmp = val.Substring(wz + attrName.Length, tz - attrName.Length - wz);
                 //else tmp = val.Substring(wz + attrName.Length + 1, tz - attrName.Length - wz - 2);
@@ -223,31 +233,32 @@ namespace MiniJson
 
         public node GetNode(string name)
         {
-            int wz = 0, tz = 0;
-            string attrName = "\"" + name + "\":";
-            wz = json.IndexOf(attrName);
-            if (wz == -1)
-                return null;
-            string tmp;
-            tmp = json.Substring(wz + attrName.Length, 1);
-            if (tmp != "[" && tmp != "{")
-                tz = json.IndexOfAny(new char[] { ',', '}' }, wz);
-            else
-                tz = indeOfBracket(json, tmp, wz + attrName.Length + 1) + 1;
-            if (tz == -1)
-                return null;
-            //if (tmp != "\"")
-            try
-            {
-                tmp = json.Substring(wz + attrName.Length, tz - attrName.Length - wz);
-                //else tmp = json.Substring(wz + attrName.Length + 1, tz - attrName.Length - wz - 2);
-                IndexNode = new node(tmp);
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-            return IndexNode;
+            return base.GetNode(name);
+            //int wz = 0, tz = 0;
+            //string attrName = "\"" + name + "\":";
+            //wz = json.IndexOf(attrName);
+            //if (wz == -1)
+            //    return null;
+            //string tmp;
+            //tmp = json.Substring(wz + attrName.Length, 1);
+            //if (tmp != "[" && tmp != "{")
+            //    tz = json.IndexOfAny(new char[] { ',', '}' }, wz);
+            //else
+            //    tz = indeOfBracket(json, tmp, wz + attrName.Length + 1) + 1;
+            //if (tz == -1)
+            //    return null;
+            ////if (tmp != "\"")
+            //try
+            //{
+            //    tmp = json.Substring(wz + attrName.Length, tz - attrName.Length - wz);
+            //    //else tmp = json.Substring(wz + attrName.Length + 1, tz - attrName.Length - wz - 2);
+            //    IndexNode = new node(tmp);
+            //}
+            //catch (Exception e)
+            //{
+            //    return null;
+            //}
+            //return IndexNode;
 
         }
         public static string getJsonByObject(Object obj)

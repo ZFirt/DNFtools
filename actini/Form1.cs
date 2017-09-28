@@ -41,7 +41,8 @@ namespace actini
                 i = atc.Date.IndexOf(Owinfo);
                 if (i > -1)
                 {
-                    atc.Date.Add(info);
+                    //atc.Date.Add(info);
+                    atc.Date.Insert(0, info);
                     refresh();
                     return;
                 }
@@ -74,8 +75,8 @@ namespace actini
 
             if (index == -1)
             {
-                atc.Date.Add(info);
-                listBox1.Items.Add(info.actname);
+                atc.Date.Insert(0,info);
+                //listBox1.Items.Add(info.actname);
                 refresh();
             }
             else
